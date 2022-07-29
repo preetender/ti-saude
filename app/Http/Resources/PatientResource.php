@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class SpecialityResource extends JsonResource
+class PatientResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -17,13 +17,14 @@ class SpecialityResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'doctors' => $this->when(
-                $this->wasRecentlyCreated || $request->has('doctors.load'),
-                fn () => $this->doctors->map(fn ($h) => [
+            'code' => $this->code,
+            'birth_date' => $this->birth_date,
+            'plans' => $this->when(
+                $this->wasRecentlyCreated || $request->has('plans.load'),
+                fn () => $this->plans->map(fn ($h) => [
                     'id' => $h->id,
-                    'name' => $h->name,
-                    'crm' => $h->crm,
-                    'code' => $h->code
+                    'description' => $h->description,
+                    'contract_number' => $h->pivot->contract_number
                 ])
             ),
             'created_at' => $this->created_at->format('d/m/Y H:i'),

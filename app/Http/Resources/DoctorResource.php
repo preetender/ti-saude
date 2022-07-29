@@ -20,7 +20,7 @@ class DoctorResource extends JsonResource
             'code' => $this->code,
             'crm' => $this->crm,
             'specialties' => $this->when(
-                $request->has('specialities.load'),
+                $this->wasRecentlyCreated || $request->has('specialities.load'),
                 fn () => $this->specialities->map(fn ($h) => [
                     'id' => $h->id,
                     'name' => $h->name,
