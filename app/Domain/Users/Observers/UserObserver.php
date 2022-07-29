@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Observers;
+namespace App\Domain\Users\Observers;
 
-use App\Models\User;
+use App\Domain\Users\Models\User;
 use Illuminate\Contracts\Container\BindingResolutionException;
 
 class UserObserver
 {
     /**
-     * @param  Model $model
+     * @param  User $model
      * @throws BindingResolutionException
      */
     public function creating(User $model): void
@@ -17,7 +17,7 @@ class UserObserver
     }
 
     /**
-     * @param  Model $model
+     * @param  User $model
      * @throws BindingResolutionException
      */
     public function updating(User $model): void

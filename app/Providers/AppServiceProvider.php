@@ -2,12 +2,18 @@
 
 namespace App\Providers;
 
-use App\Models\User;
-use App\Observers\UserObserver;
+use App\Domain\Users\Models\User;
+use App\Domain\Users\Observers\UserObserver;
+
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
+
+    protected array $observers = [
+        User::class => UserObserver::class
+    ];
+
     /**
      * Register any application services.
      *
@@ -25,6 +31,18 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        User::observe(UserObserver::class);
+        $this->registerObservers();
+    }
+
+    /**
+     * Registra observadores.
+     *
+     * @return void
+     */
+    private function registerObservers(): void
+    {
+        foreach ($this->observers as $model => $observer) {
+            $model::observe($observer);
+        }
     }
 }
