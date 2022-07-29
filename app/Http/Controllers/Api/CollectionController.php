@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Core\Api\HttpStatusCode;
 use App\Core\Repository;
 use App\Domain\Doctors\Repositories\DoctorRepository;
+use App\Domain\Specialities\Repositories\SpecialityRepository;
 use App\Domain\Users\Repositories\UserRepository;
 use App\Http\Controllers\Controller as ControllersController;
 use Illuminate\Http\Request;
@@ -20,12 +21,17 @@ class CollectionController extends ControllersController
     {
         $this->repositories = [
             'user' =>  fn () => UserRepository::make(),
-            'doctor' => fn () => DoctorRepository::make()
+            'doctor' => fn () => DoctorRepository::make(),
+            'speciality' => fn () => SpecialityRepository::make(),
         ];
 
         $model = Str::singular($request->route('model'));
 
-        abort_if(!array_key_exists($model, $this->repositories), 400, 'Repositorio não foi registrado.');
+        abort_if(
+            !array_key_exists($model, $this->repositories),
+            HttpStatusCode::BAD_REQUEST,
+            'repositorio não foi registrado para o modelo.'
+        );
 
         $this->repository = $this->repositories[$model]();
     }
