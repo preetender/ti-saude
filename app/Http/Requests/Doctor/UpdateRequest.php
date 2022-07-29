@@ -33,7 +33,8 @@ class UpdateRequest extends FormRequest
             'crm' => [
                 'nullable',
                 Rule::unique('doctors')->ignore($this->route('id'))
-            ]
+            ],
+            'specialities.*' => 'nullable|exists:specialities'
         ];
     }
 }

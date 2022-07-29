@@ -26,7 +26,8 @@ class StoreRequest extends FormRequest
         return [
             'name' => 'required|min:4|max:60',
             'code' => 'nullable|max:8|unique:doctors',
-            'crm' => 'required|max:16|unique:doctors'
+            'crm' => 'required|max:16|unique:doctors',
+            'specialities.*' => 'nullable|exists:specialities'
         ];
     }
 }

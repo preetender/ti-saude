@@ -7,6 +7,7 @@ use App\Domain\Doctors\Models\Doctor;
 use App\Http\Requests\Doctor\StoreRequest;
 use App\Http\Requests\Doctor\UpdateRequest;
 use App\Http\Resources\DoctorResource;
+use Closure;
 
 class DoctorRepository extends Repository
 {
@@ -32,5 +33,33 @@ class DoctorRepository extends Repository
     public function resource()
     {
         return DoctorResource::class;
+    }
+
+    /**
+     * Executa após gerar registro.
+     *
+     * @return Closure
+     */
+    public function afterCreate()
+    {
+        return function (Doctor $doctor) {
+            $doctor->specialities()->sync(
+                $this->getRequest()->input('specialities', [])
+            );
+        };
+    }
+
+    /**
+     * Executa após atualizar registro.
+     *
+     * @return Closure
+     */
+    public function afterUpdate()
+    {
+        return function (Doctor $doctor) {
+            $doctor->specialities()->sync(
+                $this->getRequest()->input('specialities', [])
+            );
+        };
     }
 }

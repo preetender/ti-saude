@@ -202,11 +202,18 @@ abstract class Repository
         $this->resolveClassValidator(__FUNCTION__);
 
         return DB::transaction(function () {
-            $item = $this->getModel()->newInstance();
-            $item->fill($this->getPayload());
-            $item->save();
+            $model = $this->getModel()->newInstance();
 
-            return $item;
+            $this->resolveEvent($model, Action::CREATE, EventType::BEFORE);
+
+            $model->fill($this->getPayload());
+            $model->save();
+
+            $this->resolveEvent($model, Action::CREATE, EventType::AFTER);
+
+            $model->refresh();
+
+            return $model;
         });
     }
 
@@ -228,7 +235,7 @@ abstract class Repository
 
             $force ? $model->forceDelete() : $model->delete();
 
-            $this->resolveEvent($model, Action::DELETE, EventType::BEFORE);
+            $this->resolveEvent($model, Action::DELETE, EventType::AFTER);
 
             return $model;
         });
@@ -252,7 +259,7 @@ abstract class Repository
 
             $model->restore();
 
-            $this->resolveEvent($model, Action::RESTORE, EventType::BEFORE);
+            $this->resolveEvent($model, Action::RESTORE, EventType::AFTER);
 
             return $model;
         });

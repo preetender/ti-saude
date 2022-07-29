@@ -19,6 +19,10 @@ class DoctorResource extends JsonResource
             'name' => $this->name,
             'code' => $this->code,
             'crm' => $this->crm,
+            'specialties' => $this->specialities->map(fn ($h) => [
+                'id' => $h->id,
+                'name' => $h->name,
+            ]),
             'created_at' => $this->created_at->format('d/m/Y H:i'),
             'updated_at' => $this->updated_at->diffForHumans()
         ];
