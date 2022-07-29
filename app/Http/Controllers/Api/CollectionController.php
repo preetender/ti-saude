@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Core\Api\HttpStatusCode;
 use App\Core\Repository;
 use App\Domain\Doctors\Repositories\DoctorRepository;
+use App\Domain\Patients\Repositories\PatientRepository;
 use App\Domain\Specialities\Repositories\SpecialityRepository;
 use App\Domain\Users\Repositories\UserRepository;
 use App\Http\Controllers\Controller as ControllersController;
@@ -23,6 +24,7 @@ class CollectionController extends ControllersController
             'user' =>  fn () => UserRepository::make(),
             'doctor' => fn () => DoctorRepository::make(),
             'speciality' => fn () => SpecialityRepository::make(),
+            'patient' => fn () => PatientRepository::make()
         ];
 
         $model = Str::singular($request->route('model'));

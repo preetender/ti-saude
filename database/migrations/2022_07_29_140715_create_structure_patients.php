@@ -37,9 +37,11 @@ return new class extends Migration
         });
 
         Schema::create('patient_plan', function (Blueprint $table) {
+            $table->id();
             $table->foreignId('patient_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreignId('plan_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
-            $table->string('contract_number', 6);
+            $table->string('contract_number', 8);
+            $table->timestamps();
         });
     }
 

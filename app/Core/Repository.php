@@ -146,7 +146,6 @@ abstract class Repository
     }
 
     /**
-     * Summary of interceptor
      * @param bool $newInstance
      * @return mixed
      */
@@ -156,6 +155,59 @@ abstract class Repository
 
         return (new Interceptor($this->getRequest()))->watch($resolve, $newInstance);
     }
+
+    /**
+     * Sincroniza lista de items por relacionamento.
+     *
+     * @param Model $model
+     * @param string $relation
+     * @param mixed $rows
+     * @param callable $map
+     * @return array
+     */
+    public function syncCollection(Model $model, string $relation, mixed $rows = [], callable $map)
+    {
+        $old = $model->{$relation};
+        $new = [];
+
+        $rows = $rows instanceof Collection ? $rows : collect($rows);
+
+        if ($rows->isEmpty()) {
+            $model->{$relation}()->forceDelete();
+
+            return compact('old', 'new');
+        };
+
+        $sync = [];
+
+        foreach ($rows as $row) {
+            $value = $map($row);
+
+            $id = $value['id'] ?? null;
+
+            $created = $model->{$relation}()->updateOrCreate([
+                'id' => $id
+            ], $value);
+
+            if ($created->wasRecentlyCreated) {
+                $new[] = $created;
+            }
+
+            $sync[] = $created->id;
+        }
+
+        if ($old->isNotEmpty()) {
+            $deleted = $old
+                ->pluck('id')
+                ->diff($sync)
+                ->toArray();
+
+            !empty($deleted) && $model->{$relation}()->whereIn('id', $deleted)->forceDelete();
+        }
+
+        return compact('old', 'new');
+    }
+
 
     /**
      * Atualizar por id.
@@ -213,7 +265,7 @@ abstract class Repository
 
             $model->refresh();
 
-            return $model;
+            return $this->resolveResource($model);
         });
     }
 

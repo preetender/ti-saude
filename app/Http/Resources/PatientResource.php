@@ -2,10 +2,14 @@
 
 namespace App\Http\Resources;
 
+use App\Core\Concerns\HasResource;
+
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class PatientResource extends JsonResource
 {
+    use HasResource;
+
     /**
      * Transform the resource into an array.
      *
@@ -19,8 +23,12 @@ class PatientResource extends JsonResource
             'name' => $this->name,
             'code' => $this->code,
             'birth_date' => $this->birth_date,
+            'phones' => $this->phones->map(fn ($h) => [
+                'id' => $h->id,
+                'number' => $h->number
+            ]),
             'plans' => $this->when(
-                $this->wasRecentlyCreated || $request->has('plans.load'),
+                $this->isDisplayed($request) || $request->has('plans.load'),
                 fn () => $this->plans->map(fn ($h) => [
                     'id' => $h->id,
                     'description' => $h->description,
