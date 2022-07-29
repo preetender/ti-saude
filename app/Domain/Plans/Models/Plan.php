@@ -1,16 +1,15 @@
 <?php
 
-namespace App\Domain\Specialities\Models;
+namespace App\Domain\Plans\Models;
 
 use App\Core\Concerns\HasCodeable;
 use App\Core\Concerns\HasSearch;
-use App\Domain\Doctors\Models\Doctor;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-class Speciality extends Model
+class Plan extends Model
 {
     use HasFactory, HasSearch, HasCodeable;
 
@@ -19,14 +18,14 @@ class Speciality extends Model
      *
      * @var array
      */
-    protected $fillable = ['name', 'code'];
+    protected $fillable = ['description', 'code', 'phone'];
 
     /**
      * Colunas acessiveis para busca.
      *
      * @var array<string>
      */
-    protected $searchable = ['name'];
+    protected $searchable = ['description'];
 
     /**
      * Executa busca em colunas de forma agregada.
@@ -42,10 +41,13 @@ class Speciality extends Model
     }
 
     /**
-     * @return BelongsToMany|Doctor[]
+     * @return BelongsToMany
      */
-    public function doctors()
+    public function patients()
     {
-        return $this->belongsToMany(Doctor::class);
+        return $this
+            ->belongsToMany(Patient::class)
+            ->withPivot('contract_number')
+            ->using(PatientPlan::class);
     }
 }

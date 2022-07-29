@@ -15,20 +15,20 @@ return new class extends Migration
     {
         Schema::create('doctors', function (Blueprint $table) {
             $table->id();
+            $table->string('code', 8)->index()->unique();
             $table->string('name', 60);
             $table->string('crm', 16)->unique();
-            $table->string('code', 16)->index()->unique();
             $table->timestamps();
         });
 
-        Schema::create('specialties', function (Blueprint $table) {
+        Schema::create('specialities', function (Blueprint $table) {
             $table->id();
+            $table->string('code', 8)->index()->unique();
             $table->string('name', 100)->index();
-            $table->string('code', 16)->index()->unique();
             $table->timestamps();
         });
 
-        Schema::create('doctor_specialty', function (Blueprint $table) {
+        Schema::create('doctor_speciality', function (Blueprint $table) {
             $table
                 ->foreignId('doctor_id')
                 ->constrained()
@@ -36,7 +36,7 @@ return new class extends Migration
                 ->cascadeOnUpdate();
 
             $table
-                ->foreignId('specialty_id')
+                ->foreignId('speciality_id')
                 ->constrained()
                 ->cascadeOnDelete()
                 ->cascadeOnUpdate();
@@ -50,6 +50,7 @@ return new class extends Migration
      */
     public function down()
     {
+        Schema::dropIfExists('doctor_specialty');
         Schema::dropIfExists('doctors');
         Schema::dropIfExists('specialties');
     }
