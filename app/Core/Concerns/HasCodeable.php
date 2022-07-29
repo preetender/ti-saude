@@ -19,12 +19,10 @@ trait HasCodeable
      */
     public static function bootHasCodeable(): void
     {
-        static::creating(function (Model $model) {
-            $column = $model->{$model->code_column};
+        static::saving(function (Model $model) {
+            $value = $model->{$model->code_column} ?? $model->getOriginal('code');
 
-            $model->{$model->code_column} = empty($column) ?
-                CodeSupport::factory($model->getTable())->random()
-                : $column;
+            $model->{$model->code_column} = !$value ? CodeSupport::factory($model->getTable())->random() : $value;
         });
     }
 }

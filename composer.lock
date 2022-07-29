@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8d87b865ebec8dda313608dab663918d",
+    "content-hash": "c1c6ba525ffc5a34f7354930355c4ed1",
     "packages": [
         {
             "name": "brick/math",
@@ -2458,6 +2458,53 @@
                 }
             ],
             "time": "2021-12-04T23:24:31+00:00"
+        },
+        {
+            "name": "preetender/laravel-finder",
+            "version": "0.1.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/preetender/laravel-finder.git",
+                "reference": "9456267a6e8b96c374152a5c889054cf2f902142"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/preetender/laravel-finder/zipball/9456267a6e8b96c374152a5c889054cf2f902142",
+                "reference": "9456267a6e8b96c374152a5c889054cf2f902142",
+                "shasum": ""
+            },
+            "require-dev": {
+                "illuminate/container": "^9.0",
+                "illuminate/database": "^9.0",
+                "illuminate/http": "^9.0",
+                "illuminate/routing": "^9.0",
+                "illuminate/support": "^9.0"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "./helper.php"
+                ],
+                "psr-4": {
+                    "Preetender\\Finder\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "César Gutierres",
+                    "email": "cesinhagutierres@gmail.com"
+                }
+            ],
+            "description": "consulta informações via querystring.",
+            "support": {
+                "issues": "https://github.com/preetender/laravel-finder/issues",
+                "source": "https://github.com/preetender/laravel-finder/tree/0.1.2"
+            },
+            "time": "2022-06-03T03:25:23+00:00"
         },
         {
             "name": "psr/container",

@@ -4,6 +4,7 @@ namespace App\Domain\Users\Observers;
 
 use App\Domain\Users\Models\User;
 use Illuminate\Contracts\Container\BindingResolutionException;
+use Illuminate\Support\Str;
 
 class UserObserver
 {
@@ -14,6 +15,7 @@ class UserObserver
     public function creating(User $model): void
     {
         $model->password = app('hash')->make($model->password);
+        $model->remember_token = Str::random(10);
     }
 
     /**

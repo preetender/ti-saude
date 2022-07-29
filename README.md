@@ -52,3 +52,24 @@ JWT_SECRET=RANDOM_STRING
 
 JWT_ALGO=HS256
 ```
+
+## Estrutura
+
+Para fim de uma melhor organização, foi utilizado o modelo baseado nos principios do `Domain Drive Design`.
+
+```
+- Domain
+    - Entity
+        - Models
+        - Observers
+        - Repositories
+        - ...
+```
+
+## Notas do desenvolvedor
+
+O classe `App\Core\Repository` foi elaborada por mim a fim de facilitar o controle do dado, como podem notar, as rotas ligadas a `/api/v1/` possue um grupo dinamico chamado `/{model}/` isso é feito para evitar duplicação de codigo e assim tornar o código mais eficiente.
+
+## Recursos Externos
+
+- preetender/laravel-finder: pacote utilizado para montar consulta via `query-string` de minha autoria.
