@@ -2,8 +2,18 @@
 
 namespace App\Exceptions;
 
-use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
+use App\Core\Api\Response;
+use App\Core\Api\Exception as ApiException;
+use App\Core\Api\HttpStatusCode;
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Symfony\Component\HttpKernel\Exception\HttpException;
+use Illuminate\Auth\AuthenticationException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Validation\ValidationException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Translation\Exception\NotFoundResourceException;
 
 class Handler extends ExceptionHandler
 {
@@ -46,5 +56,40 @@ class Handler extends ExceptionHandler
         $this->reportable(function (Throwable $e) {
             //
         });
+    }
+
+    /**
+     * Obtem numero do status
+     *
+     * @return int
+     */
+    private function extractStatusCode(Throwable $e)
+    {
+        $errors = array_values(
+            array_filter(
+                [
+                    $e instanceof HttpException ? (method_exists($e, 'getResponse') ? $e->getResponse()->getStatusCode() : HttpStatus::BAD_REQUEST
+                    ) : HttpStatusCode::BAD_REQUEST,
+                    $e instanceof ApiException ? $e->getStatusCode() : null,
+                    $e instanceof AuthenticationException ? HttpStatusCode::UNAUTHORIZED : null,
+                    $e instanceof AuthorizationException ? HttpStatusCode::FORBIDDEN : null,
+                    $e instanceof ValidationException ? HttpStatusCode::UNPROCESSABLE_ENTITY : null,
+                    $e instanceof NotFoundHttpException ? HttpStatusCode::NOT_FOUND : null,
+                    $e instanceof NotFoundResourceException ? HttpStatusCode::NOT_FOUND : null,
+                    $e instanceof ModelNotFoundException ? HttpStatusCode::NOT_FOUND : null,
+                ]
+            )
+        );
+
+        return empty($errors) ? HttpStatusCode::INTERNAL_SERVER_ERROR : end($errors);
+    }
+
+    /**
+     * @param \Illuminate\Http\Request $request
+     * @param Throwable $e
+     */
+    public function render($request, Throwable $e)
+    {
+        return Response::send($e, $this->extractStatusCode($e));
     }
 }
