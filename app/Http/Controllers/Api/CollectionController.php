@@ -8,6 +8,7 @@ use App\Domain\Consultants\Repositories\ConsultantRepository;
 use App\Domain\Doctors\Repositories\DoctorRepository;
 use App\Domain\Patients\Repositories\PatientRepository;
 use App\Domain\Plans\Repositories\PlanRepository;
+use App\Domain\Procedures\Repositories\ProcedureRepository;
 use App\Domain\Specialities\Repositories\SpecialityRepository;
 use App\Domain\Users\Repositories\UserRepository;
 use App\Http\Controllers\Controller as ControllersController;
@@ -29,6 +30,7 @@ class CollectionController extends ControllersController
             'patient' => fn () => PatientRepository::make(),
             'plan' => fn () => PlanRepository::make(),
             'consultant' => fn () => ConsultantRepository::make(),
+            'procedure' => fn () => ProcedureRepository::make()
         ];
 
         $model = Str::singular($request->route('model'));
