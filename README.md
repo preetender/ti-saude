@@ -72,4 +72,20 @@ O classe `App\Core\Repository` foi elaborada por mim a fim de facilitar o contro
 
 ## Recursos Externos
 
-- preetender/laravel-finder: pacote utilizado para montar consulta via `query-string` de minha autoria.
+- [preetender/laravel-finder](https://github.com/preetender/laravel-finder): pacote utilizado para montar consulta via `query-string` de minha autoria.
+
+- [jubeki/laravel-code-style](https://github.com/jubeki/laravel-code-style): formatação de código.
+
+## Teste
+
+> php artisan test
+
+## Formatação
+
+Checar padrão do código e retornar diferença.
+
+> composer run check-styles
+
+Formar código de acordo com o padrão.
+
+> composer run fix-style
