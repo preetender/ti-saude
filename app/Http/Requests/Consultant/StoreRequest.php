@@ -27,7 +27,7 @@ class StoreRequest extends FormRequest
             'patient_id' => 'required|exists:patients,id',
             'doctor_id' => 'required|exists:doctors,id',
             'date' => 'required|date',
-            'hour' => 'required|date_format:H:i',
+            'hour' => 'required|date_format:H:i:s',
             'private' => 'required|boolean',
             'procedures.*' => 'nullable|exists:procedures,id'
         ];

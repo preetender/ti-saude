@@ -27,7 +27,7 @@ class UpdateRequest extends FormRequest
             'patient_id' => 'required|exists:patients,id',
             'doctor_id' => 'required|exists:doctors,id',
             'date' => 'nullable|date',
-            'hour' => 'nullable|date_format:H:i',
+            'hour' => 'nullable|date_format:H:i:s',
             'private' => 'nullable|boolean',
             'procedures.*' => 'nullable|exists:procedures,id'
         ];

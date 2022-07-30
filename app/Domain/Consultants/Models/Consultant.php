@@ -6,7 +6,9 @@ use App\Core\Concerns\HasCodeable;
 use App\Core\Concerns\HasSearch;
 use App\Domain\Doctors\Models\Doctor;
 use App\Domain\Patients\Models\Patient;
+use App\Domain\Procedures\Models\Procedure;
 use Illuminate\Contracts\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -58,11 +60,23 @@ class Consultant extends Model
     }
 
     /**
-     * @return BelongsToMany
+     * Somar valor dos procedimentos.
+     *
+     * @return Attribute
+     */
+    protected function totalProcedure(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->procedures()->sum('value')
+        );
+    }
+
+    /**
+     * @return BelongsToMany|Procedure[]
      */
     public function procedures()
     {
-        return $this->belongsToMany(Patient::class);
+        return $this->belongsToMany(Procedure::class);
     }
 
     /**
