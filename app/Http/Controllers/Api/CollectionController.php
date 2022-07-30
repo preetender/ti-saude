@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Core\Api\HttpStatusCode;
 use App\Core\Repository;
+use App\Domain\Consultants\Repositories\ConsultantRepository;
 use App\Domain\Doctors\Repositories\DoctorRepository;
 use App\Domain\Patients\Repositories\PatientRepository;
 use App\Domain\Plans\Repositories\PlanRepository;
@@ -27,12 +28,13 @@ class CollectionController extends ControllersController
             'speciality' => fn () => SpecialityRepository::make(),
             'patient' => fn () => PatientRepository::make(),
             'plan' => fn () => PlanRepository::make(),
+            'consultant' => fn () => ConsultantRepository::make(),
         ];
 
         $model = Str::singular($request->route('model'));
 
         abort_if(
-            ! array_key_exists($model, $this->repositories),
+            !array_key_exists($model, $this->repositories),
             HttpStatusCode::BAD_REQUEST,
             'repositorio não foi registrado para o modelo.'
         );
