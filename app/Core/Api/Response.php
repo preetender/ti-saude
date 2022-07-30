@@ -52,10 +52,10 @@ class Response implements HttpStatusCode
                 [
                     'message' => $message,
                     'code' => $data->getCode(),
-                    'line' => !env('APP_DEBUG') ?: $data->getLine(),
-                    'file' => !env('APP_DEBUG') ?: $data->getFile(),
-                    'exception' => !env('APP_DEBUG') ?: get_class($data),
-                    'trace' => !env('APP_DEBUG') ?: collect($data->getTrace())->map(function ($trace) {
+                    'line' => ! env('APP_DEBUG') ?: $data->getLine(),
+                    'file' => ! env('APP_DEBUG') ?: $data->getFile(),
+                    'exception' => ! env('APP_DEBUG') ?: get_class($data),
+                    'trace' => ! env('APP_DEBUG') ?: collect($data->getTrace())->map(function ($trace) {
                         return Arr::except($trace, ['args']);
                     })->take(5)->all(),
                     'errors' => $errors,

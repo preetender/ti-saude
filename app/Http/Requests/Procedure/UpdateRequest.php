@@ -30,7 +30,7 @@ class UpdateRequest extends FormRequest
                 'nullable',
                 Rule::unique('procedures')->ignore($this->route('id')),
             ],
-            'value' => 'required|numeric|min:1'
+            'value' => 'required|numeric|min:1',
         ];
     }
 }

@@ -29,7 +29,7 @@ class UpdateRequest extends FormRequest
             'date' => 'nullable|date',
             'hour' => 'nullable|date_format:H:i:s',
             'private' => 'nullable|boolean',
-            'procedures.*' => 'nullable|exists:procedures,id'
+            'procedures.*' => 'nullable|exists:procedures,id',
         ];
     }
 }

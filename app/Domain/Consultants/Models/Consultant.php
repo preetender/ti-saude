@@ -27,7 +27,7 @@ class Consultant extends Model
         'code',
         'date',
         'hour',
-        'private'
+        'private',
     ];
 
     /**

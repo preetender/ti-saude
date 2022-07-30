@@ -29,7 +29,7 @@ class StoreRequest extends FormRequest
             'date' => 'required|date',
             'hour' => 'required|date_format:H:i:s',
             'private' => 'required|boolean',
-            'procedures.*' => 'nullable|exists:procedures,id'
+            'procedures.*' => 'nullable|exists:procedures,id',
         ];
     }
 }
