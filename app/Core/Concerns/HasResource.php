@@ -7,7 +7,7 @@ trait HasResource
     /**
      * Determina se valor pode ser exibido.
      *
-     * @param mixed $request
+     * @param  mixed  $request
      * @return bool
      */
     public function isDisplayed($request)

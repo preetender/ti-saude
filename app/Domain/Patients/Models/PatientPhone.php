@@ -2,7 +2,6 @@
 
 namespace App\Domain\Patients\Models;
 
-
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -16,7 +15,6 @@ class PatientPhone extends Model
     protected $fillable = ['number'];
 
     /**
-     *
      * @return BelongsTo
      */
     public function patient()

@@ -28,9 +28,9 @@ class UpdateRequest extends FormRequest
             'description' => 'nullable|min:4',
             'code' => [
                 'nullable',
-                Rule::unique('plans')->ignore($this->route('id'))
+                Rule::unique('plans')->ignore($this->route('id')),
             ],
-            'phone' => 'nullable|digits_between:10,11'
+            'phone' => 'nullable|digits_between:10,11',
         ];
     }
 }

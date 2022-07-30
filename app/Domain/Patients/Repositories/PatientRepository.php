@@ -8,9 +8,6 @@ use App\Http\Requests\Patient\StoreRequest;
 use App\Http\Requests\Patient\UpdateRequest;
 use App\Http\Resources\PatientResource;
 use Closure;
-use Illuminate\Database\Eloquent\MassAssignmentException;
-use Illuminate\Database\Eloquent\InvalidCastException;
-use Illuminate\Support\Arr;
 
 class PatientRepository extends Repository
 {
@@ -19,7 +16,7 @@ class PatientRepository extends Repository
      */
     protected array $validations = [
         StoreRequest::class,
-        UpdateRequest::class
+        UpdateRequest::class,
     ];
 
     /**
@@ -39,9 +36,10 @@ class PatientRepository extends Repository
     }
 
     /**
-     * Atualiza planos
-     * @param mixed $model
-     * @param array $plans
+     * Atualiza planos.
+     *
+     * @param  mixed  $model
+     * @param  array  $plans
      * @return void
      */
     public function syncPlans(Patient $model, array $plans = [])
@@ -49,8 +47,8 @@ class PatientRepository extends Repository
         $items = collect($plans)
             ->mapWithKeys(fn ($plan) => [
                 $plan['id'] => [
-                    'contract_number' => $plan['contract_number']
-                ]
+                    'contract_number' => $plan['contract_number'],
+                ],
             ]);
 
         $model->plans()->sync($items);
@@ -69,7 +67,7 @@ class PatientRepository extends Repository
                 'phones',
                 $this->getRequest()->input('phones'),
                 fn ($item) => [
-                    'number' => $item['number']
+                    'number' => $item['number'],
                 ]
             );
         };

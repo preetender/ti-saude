@@ -28,13 +28,13 @@ class UpdateRequest extends FormRequest
             'name' => 'nullable|min:4|max:60',
             'code' => [
                 'nullable',
-                Rule::unique('doctors')->ignore($this->route('id'))
+                Rule::unique('doctors')->ignore($this->route('id')),
             ],
             'crm' => [
                 'nullable',
-                Rule::unique('doctors')->ignore($this->route('id'))
+                Rule::unique('doctors')->ignore($this->route('id')),
             ],
-            'specialities.*' => 'nullable|exists:specialities'
+            'specialities.*' => 'nullable|exists:specialities',
         ];
     }
 }

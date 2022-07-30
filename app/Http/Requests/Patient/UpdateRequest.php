@@ -29,13 +29,13 @@ class UpdateRequest extends FormRequest
             'code' => [
                 'nullable',
                 'max:8',
-                Rule::unique('patients')->ignore($this->route('id'))
+                Rule::unique('patients')->ignore($this->route('id')),
             ],
             'plans.*.id' => 'nullable|exists:plans,id',
             'plans.*.contract_number' => [
                 'required_with:plans.*.id',
-                Rule::unique('patient_plan')->ignore($this->route('id'), 'patient_id')
-            ]
+                Rule::unique('patient_plan')->ignore($this->route('id'), 'patient_id'),
+            ],
         ];
     }
 }

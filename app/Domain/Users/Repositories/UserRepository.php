@@ -15,13 +15,13 @@ class UserRepository extends Repository
      */
     protected array $validations = [
         StoreRequest::class,
-        UpdateRequest::class
+        UpdateRequest::class,
     ];
 
     /**
      * @return string
      */
-    function model()
+    public function model()
     {
         return User::class;
     }

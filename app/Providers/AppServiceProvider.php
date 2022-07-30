@@ -9,9 +9,8 @@ use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
-
     protected array $observers = [
-        User::class => UserObserver::class
+        User::class => UserObserver::class,
     ];
 
     /**

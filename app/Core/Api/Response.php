@@ -10,7 +10,7 @@ use Throwable;
 class Response implements HttpStatusCode
 {
     /**
-     * @param integer $code
+     * @param  int  $code
      * @return mixed
      */
     public static function statusText(int $code = null)
@@ -21,9 +21,9 @@ class Response implements HttpStatusCode
     }
 
     /**
-     * @param mixed $data
-     * @param int $status
-     * @param array $headers
+     * @param  mixed  $data
+     * @param  int  $status
+     * @param  array  $headers
      * @return \Illuminate\Http\Response
      */
     public static function send($data = null, $status = 200, $headers = [])
@@ -32,7 +32,7 @@ class Response implements HttpStatusCode
 
         if ($status >= 400 && $data instanceof Throwable) {
             $errors = [
-                $data->getMessage()
+                $data->getMessage(),
             ];
 
             if ($status === 422 && $data instanceof ValidationException) {
@@ -41,7 +41,7 @@ class Response implements HttpStatusCode
 
             $normalize = [
                 QueryException::class => fn () => __('common.status.400'),
-                ValidationException::class => fn () => __('common.status.422')
+                ValidationException::class => fn () => __('common.status.422'),
             ];
 
             $message = in_array(get_class($data), array_keys($normalize))
@@ -58,7 +58,7 @@ class Response implements HttpStatusCode
                     'trace' => !env('APP_DEBUG') ?: collect($data->getTrace())->map(function ($trace) {
                         return Arr::except($trace, ['args']);
                     })->take(5)->all(),
-                    'errors' => $errors
+                    'errors' => $errors,
                 ]
             );
         }
@@ -74,10 +74,10 @@ class Response implements HttpStatusCode
     }
 
     /**
-     * Status 200
+     * Status 200.
      *
      * @param $data
-     * @param array $headers
+     * @param  array  $headers
      * @return \Illuminate\Http\Response
      */
     public static function respondOk($data, $headers = [])
@@ -86,10 +86,10 @@ class Response implements HttpStatusCode
     }
 
     /**
-     * Status 201
+     * Status 201.
      *
      * @param $data
-     * @param array $headers
+     * @param  array  $headers
      * @return \Illuminate\Http\Response
      */
     public static function respondCreated($data, $headers = [])
@@ -106,10 +106,10 @@ class Response implements HttpStatusCode
     }
 
     /**
-     * Status 400
+     * Status 400.
      *
      * @param $error
-     * @param array $headers
+     * @param  array  $headers
      * @return \Illuminate\Http\Response
      */
     public static function respondBadRequest($error, $headers = [])
@@ -118,10 +118,10 @@ class Response implements HttpStatusCode
     }
 
     /**
-     * Status 404
+     * Status 404.
      *
      * @param $error
-     * @param array $headers
+     * @param  array  $headers
      * @return \Illuminate\Http\Response
      */
     public static function respondNotFound($error, $headers = [])
@@ -130,10 +130,10 @@ class Response implements HttpStatusCode
     }
 
     /**
-     * Status 500
+     * Status 500.
      *
      * @param $error
-     * @param array $headers
+     * @param  array  $headers
      * @return \Illuminate\Http\Response
      */
     public static function respondInternal($error, $headers = [])
@@ -142,10 +142,10 @@ class Response implements HttpStatusCode
     }
 
     /**
-     * Status 502
+     * Status 502.
      *
      * @param $error
-     * @param array $headers
+     * @param  array  $headers
      * @return \Illuminate\Http\Response
      */
     public static function respondBadGateway($error, $headers = [])
@@ -154,10 +154,10 @@ class Response implements HttpStatusCode
     }
 
     /**
-     * Status 503
+     * Status 503.
      *
      * @param $error
-     * @param array $headers
+     * @param  array  $headers
      * @return \Illuminate\Http\Response
      */
     public static function respondServerUnavailable($error, $headers = [])
@@ -166,9 +166,9 @@ class Response implements HttpStatusCode
     }
 
     /**
-     * @param boolean $condition
-     * @param string $message
-     * @param mixed $code
+     * @param  bool  $condition
+     * @param  string  $message
+     * @param  mixed  $code
      * @return void
      */
     public static function sendIf(bool $condition, string $message = null, int $status = 400, mixed $code = null)

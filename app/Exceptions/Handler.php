@@ -2,18 +2,18 @@
 
 namespace App\Exceptions;
 
-use Throwable;
-use App\Core\Api\Response;
 use App\Core\Api\Exception as ApiException;
 use App\Core\Api\HttpStatusCode;
+use App\Core\Api\Response;
 use Illuminate\Auth\Access\AuthorizationException;
-use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
-use Symfony\Component\HttpKernel\Exception\HttpException;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Validation\ValidationException;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Translation\Exception\NotFoundResourceException;
+use Throwable;
 
 class Handler extends ExceptionHandler
 {
@@ -59,7 +59,7 @@ class Handler extends ExceptionHandler
     }
 
     /**
-     * Obtem numero do status
+     * Obtem numero do status.
      *
      * @return int
      */
@@ -85,8 +85,8 @@ class Handler extends ExceptionHandler
     }
 
     /**
-     * @param \Illuminate\Http\Request $request
-     * @param Throwable $e
+     * @param  \Illuminate\Http\Request  $request
+     * @param  Throwable  $e
      */
     public function render($request, Throwable $e)
     {

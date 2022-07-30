@@ -3,7 +3,6 @@
 namespace App\Domain\Specialities\Repositories;
 
 use App\Core\Repository;
-
 use App\Domain\Specialities\Models\Speciality;
 use App\Http\Requests\Speciality\StoreRequest;
 use App\Http\Requests\Speciality\UpdateRequest;
@@ -16,7 +15,7 @@ class SpecialityRepository extends Repository
      */
     protected array $validations = [
         StoreRequest::class,
-        UpdateRequest::class
+        UpdateRequest::class,
     ];
 
     /**

@@ -32,7 +32,7 @@ class CollectionController extends ControllersController
         $model = Str::singular($request->route('model'));
 
         abort_if(
-            !array_key_exists($model, $this->repositories),
+            ! array_key_exists($model, $this->repositories),
             HttpStatusCode::BAD_REQUEST,
             'repositorio não foi registrado para o modelo.'
         );
@@ -52,7 +52,7 @@ class CollectionController extends ControllersController
     }
 
     /**
-     * @param mixed $id
+     * @param  mixed  $id
      * @return mixed
      */
     public function show(Request $request)
@@ -64,6 +64,7 @@ class CollectionController extends ControllersController
 
     /**
      * @return mixed
+     *
      * @throws BindingResolutionException
      */
     public function store()
@@ -72,12 +73,12 @@ class CollectionController extends ControllersController
     }
 
     /**
-     * @param Request $request
+     * @param  Request  $request
      * @return mixed
      */
     public function update(Request $request)
     {
-        list($model) = $this->repository->updateById(
+        [$model] = $this->repository->updateById(
             $request->route('id')
         );
 
@@ -85,7 +86,7 @@ class CollectionController extends ControllersController
     }
 
     /**
-     * @param Request $request
+     * @param  Request  $request
      * @return mixed
      */
     public function destroy(Request $request, $model, $id)

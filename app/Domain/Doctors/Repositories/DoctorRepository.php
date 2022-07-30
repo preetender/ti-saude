@@ -16,7 +16,7 @@ class DoctorRepository extends Repository
      */
     protected array $validations = [
         StoreRequest::class,
-        UpdateRequest::class
+        UpdateRequest::class,
     ];
 
     /**

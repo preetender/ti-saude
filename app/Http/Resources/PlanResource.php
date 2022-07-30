@@ -20,7 +20,7 @@ class PlanResource extends JsonResource
             'code' => $this->code,
             'phone' => $this->phone,
             'created_at' => $this->created_at->format('d/m/Y H:i'),
-            'updated_at' => $this->updated_at->diffForHumans()
+            'updated_at' => $this->updated_at->diffForHumans(),
         ];
     }
 }

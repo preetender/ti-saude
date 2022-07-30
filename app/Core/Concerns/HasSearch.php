@@ -8,13 +8,13 @@ use Illuminate\Support\Arr;
 trait HasSearch
 {
     /**
-     * @param Builder $query
-     * @param mixed $value
+     * @param  Builder  $query
+     * @param  mixed  $value
      * @return Builder|mixed
      */
     public function scopeSearch(Builder $query, $value)
     {
-        if (!$value) return $query;
+        if (! $value) return $query;
 
         $searchColumns = match (count($this->searchable)) {
             1 => $this->searchable[0] === '*' ? $this->getFillable() : $this->searchable,
@@ -29,22 +29,22 @@ trait HasSearch
 
         $queryOptions = [];
         $customOptions = [];
-        $inputText = "";
+        $inputText = '';
 
         $mapQueryOption = function ($column, $value) {
             return match ($column) {
                 'id' => [
                     'id',
-                    "=",
+                    '=',
                     $value,
-                    "or"
+                    'or',
                 ],
 
                 default => [
                     $column,
-                    "like",
+                    'like',
                     "%$value%",
-                    "or"
+                    'or',
                 ]
             };
         };
@@ -62,12 +62,12 @@ trait HasSearch
 
             preg_match("#(\w+)\=(.+)#", $text, $filtered);
 
-            if (!empty($filtered)) {
+            if (! empty($filtered)) {
                 //* condição de pesquisa em coluna especifica.
-                list(, $column, $value) = $filtered;
+                [, $column, $value] = $filtered;
 
                 $queryOptions = [
-                    [$column, '=', $value]
+                    [$column, '=', $value],
                 ];
 
                 break;
@@ -90,7 +90,7 @@ trait HasSearch
         );
 
         $query
-            ->when(!empty($queryOptions), fn ($query) => $query->where($queryOptions))
+            ->when(! empty($queryOptions), fn ($query) => $query->where($queryOptions))
             ->when(
                 method_exists($this, 'applyFilters'),
                 fn ($query) => $mapped($query)
@@ -100,7 +100,7 @@ trait HasSearch
     /**
      * Formata entrada para busca em lista.
      *
-     * @param mixed $value
+     * @param  mixed  $value
      * @return mixed
      */
     protected static function prepareFilterValue($value)
@@ -117,8 +117,8 @@ trait HasSearch
     /**
      * Prepara filtro para campo data.
      *
-     * @param mixed $value
-     * @param mixed $date_column
+     * @param  mixed  $value
+     * @param  mixed  $date_column
      * @return array
      */
     protected static function prepareFilterDate($value, $date_column = 'date')
@@ -126,7 +126,7 @@ trait HasSearch
         $format = match ($date_column) {
             default => [
                 '#\d{4}-\d{2}-\d{2}#',
-                '%Y-%m-%d'
+                '%Y-%m-%d',
             ],
         };
 
@@ -136,7 +136,7 @@ trait HasSearch
 
         return [
             sprintf("DATE_FORMAT($date_column, '%s') = ?", $format[1]),
-            $matches[0]
+            $matches[0],
         ];
     }
 }

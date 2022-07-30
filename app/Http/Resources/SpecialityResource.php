@@ -23,11 +23,11 @@ class SpecialityResource extends JsonResource
                     'id' => $h->id,
                     'name' => $h->name,
                     'crm' => $h->crm,
-                    'code' => $h->code
+                    'code' => $h->code,
                 ])
             ),
             'created_at' => $this->created_at->format('d/m/Y H:i'),
-            'updated_at' => $this->updated_at->diffForHumans()
+            'updated_at' => $this->updated_at->diffForHumans(),
         ];
     }
 }

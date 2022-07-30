@@ -14,8 +14,8 @@ final class CodeSupport
     private int $prefix = 27;
 
     /**
-     * @param string $table
-     * @param int $size
+     * @param  string  $table
+     * @param  int  $size
      * @return void
      */
     public function __construct(
@@ -26,9 +26,9 @@ final class CodeSupport
     }
 
     /**
-     * @param string $table
-     * @param string $column
-     * @param int $size
+     * @param  string  $table
+     * @param  string  $column
+     * @param  int  $size
      * @return static
      */
     public static function factory(string $table, string $column = 'code', int $size = 8): static

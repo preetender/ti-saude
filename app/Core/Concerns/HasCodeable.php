@@ -22,7 +22,7 @@ trait HasCodeable
         static::saving(function (Model $model) {
             $value = $model->{$model->code_column} ?? $model->getOriginal('code');
 
-            $model->{$model->code_column} = !$value ? CodeSupport::factory($model->getTable())->random() : $value;
+            $model->{$model->code_column} = ! $value ? CodeSupport::factory($model->getTable())->random() : $value;
         });
     }
 }

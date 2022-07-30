@@ -29,9 +29,9 @@ class UpdateRequest extends FormRequest
             'email' => [
                 'nullable',
                 'email',
-                Rule::unique('users')->ignore($this->route('id'))
+                Rule::unique('users')->ignore($this->route('id')),
             ],
-            'password' => 'nullable|min:6|confirmed'
+            'password' => 'nullable|min:6|confirmed',
         ];
     }
 }

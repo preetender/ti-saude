@@ -28,7 +28,7 @@ class StoreRequest extends FormRequest
             'code' => 'nullable|max:8|unique:patients',
             'birth_date' => 'required|date',
             'plans.*.id' => 'nullable|exists:plans,id',
-            'plans.*.contract_number' => 'required_with:plans.*.id|unique:patient_plan|max:6'
+            'plans.*.contract_number' => 'required_with:plans.*.id|unique:patient_plan|max:6',
         ];
     }
 }

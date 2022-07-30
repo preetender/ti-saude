@@ -31,9 +31,9 @@ class Doctor extends Model
     /**
      * Executa busca em colunas de forma agregada.
      *
-     * @param Builder $query
-     * @param mixed $input
-     * @param mixed $column
+     * @param  Builder  $query
+     * @param  mixed  $input
+     * @param  mixed  $column
      * @return void
      */
     public function applyFilters(Builder $query, $input, $column): void

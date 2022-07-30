@@ -25,8 +25,8 @@ class StoreRequest extends FormRequest
     {
         return [
             'description' => 'required|min:4',
-            'code' => 'nullable|unique:plans',
-            'phone' => 'required|digits_between:10,11'
+            'code' => 'nullable|unique:plans|max:8',
+            'phone' => 'required|digits_between:10,11',
         ];
     }
 }

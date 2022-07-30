@@ -9,7 +9,8 @@ use Illuminate\Support\Str;
 class UserObserver
 {
     /**
-     * @param  User $model
+     * @param  User  $model
+     *
      * @throws BindingResolutionException
      */
     public function creating(User $model): void
@@ -19,7 +20,8 @@ class UserObserver
     }
 
     /**
-     * @param  User $model
+     * @param  User  $model
+     *
      * @throws BindingResolutionException
      */
     public function updating(User $model): void

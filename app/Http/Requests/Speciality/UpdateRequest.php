@@ -29,7 +29,7 @@ class UpdateRequest extends FormRequest
             'code' => [
                 'nullable',
                 'max:8',
-                Rule::unique('specialities')->ignore($this->route('id'))
+                Rule::unique('specialities')->ignore($this->route('id')),
             ],
         ];
     }

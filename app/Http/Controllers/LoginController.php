@@ -17,11 +17,11 @@ class LoginController extends Controller
 
         $token = Auth::attempt($credentials);
 
-        abort_if(!$token, 401, __('auth.failed'));
+        abort_if(! $token, 401, __('auth.failed'));
 
         return [
             'access_token' => $token,
-            'user' => Auth::user()
+            'user' => Auth::user(),
         ];
     }
 }

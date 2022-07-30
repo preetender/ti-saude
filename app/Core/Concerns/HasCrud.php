@@ -2,8 +2,8 @@
 
 namespace App\Core\Concerns;
 
-use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Contracts\Container\BindingResolutionException;
+use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Str;
@@ -11,8 +11,8 @@ use Illuminate\Support\Str;
 trait HasCrud
 {
     /**
-     * @param Request $request
-     * @param mixed $id
+     * @param  Request  $request
+     * @param  mixed  $id
      * @return mixed
      */
     public function show(Request $request, $id)
@@ -33,23 +33,24 @@ trait HasCrud
     }
 
     /**
-     * @param Request $request
-     * @param mixed $id
+     * @param  Request  $request
+     * @param  mixed  $id
      * @return mixed
      */
     public function update(Request $request, $id)
     {
         $id = $this->getRouteId($request, $id);
 
-        list($model) = $this->repository->updateById($id);
+        [$model] = $this->repository->updateById($id);
 
         return $this->repository->resolveResource($model);
     }
 
     /**
-     * @param Request $request
-     * @param mixed $id
+     * @param  Request  $request
+     * @param  mixed  $id
      * @return Response|ResponseFactory
+     *
      * @throws BindingResolutionException
      */
     public function destroy(Request $request, $id)
@@ -62,8 +63,8 @@ trait HasCrud
     }
 
     /**
-     * @param Request $request
-     * @param mixed $id
+     * @param  Request  $request
+     * @param  mixed  $id
      * @return mixed
      */
     public function restore(Request $request, $id)
@@ -76,8 +77,8 @@ trait HasCrud
     }
 
     /**
-     * @param Request $request
-     * @param mixed $default
+     * @param  Request  $request
+     * @param  mixed  $default
      * @return mixed
      */
     private function getRouteId(Request $request, mixed $default = null)

@@ -10,8 +10,8 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
-use Preetender\Finder\Interceptor;
 use Illuminate\Support\Str;
+use Preetender\Finder\Interceptor;
 
 enum EventType: string
 {
@@ -47,11 +47,11 @@ abstract class Repository
     protected array $events = [
         'before' => [],
         'during' => [],
-        'after' => []
+        'after' => [],
     ];
 
     /**
-     * @param Request $request
+     * @param  Request  $request
      * @return void
      */
     public function __construct(protected Request $request)
@@ -76,6 +76,7 @@ abstract class Repository
 
     /**
      * @return void
+     *
      * @throws BindingResolutionException
      */
     public function getAlias()
@@ -103,13 +104,13 @@ abstract class Repository
             'beforeCreate',
             'afterCreate',
             'beforeDelete',
-            'afterDelete'
+            'afterDelete',
         ];
 
         $methods = array_filter(get_class_methods($this), fn ($h) => in_array($h, $keys));
 
         foreach ($methods as $method) {
-            list($event, $action) = Str::of($method)->kebab()->explode('-');
+            [$event, $action] = Str::of($method)->kebab()->explode('-');
 
             $this->events[$event][$action] = $this->{$method}();
         }
@@ -124,8 +125,8 @@ abstract class Repository
     }
 
     /**
-     * @param mixed $data
-     * @param bool $collection
+     * @param  mixed  $data
+     * @param  bool  $collection
      * @return mixed
      */
     public function resolveResource(mixed $data, bool $collection = false)
@@ -146,7 +147,7 @@ abstract class Repository
     }
 
     /**
-     * @param bool $newInstance
+     * @param  bool  $newInstance
      * @return mixed
      */
     public function interceptor(bool $newInstance = false, callable $callable = null)
@@ -159,10 +160,10 @@ abstract class Repository
     /**
      * Sincroniza lista de items por relacionamento.
      *
-     * @param Model $model
-     * @param string $relation
-     * @param mixed $rows
-     * @param callable $map
+     * @param  Model  $model
+     * @param  string  $relation
+     * @param  mixed  $rows
+     * @param  callable  $map
      * @return array
      */
     public function syncCollection(Model $model, string $relation, mixed $rows = [], callable $map)
@@ -176,7 +177,7 @@ abstract class Repository
             $model->{$relation}()->forceDelete();
 
             return compact('old', 'new');
-        };
+        }
 
         $sync = [];
 
@@ -186,7 +187,7 @@ abstract class Repository
             $id = $value['id'] ?? null;
 
             $created = $model->{$relation}()->updateOrCreate([
-                'id' => $id
+                'id' => $id,
             ], $value);
 
             if ($created->wasRecentlyCreated) {
@@ -202,21 +203,20 @@ abstract class Repository
                 ->diff($sync)
                 ->toArray();
 
-            !empty($deleted) && $model->{$relation}()->whereIn('id', $deleted)->forceDelete();
+            ! empty($deleted) && $model->{$relation}()->whereIn('id', $deleted)->forceDelete();
         }
 
         return compact('old', 'new');
     }
 
-
     /**
      * Atualizar por id.
      *
-     * @param int $id
-     * @param array $data
+     * @param  int  $id
+     * @param  array  $data
      * @return array
      */
-    public function updateById(int $id, array $data = [],)
+    public function updateById(int $id, array $data = [])
     {
         $this->request->merge($data);
 
@@ -239,7 +239,7 @@ abstract class Repository
 
             return [
                 $model,
-                $changes
+                $changes,
             ];
         });
     }
@@ -272,8 +272,8 @@ abstract class Repository
     /**
      * Remover registro por id.
      *
-     * @param int $id
-     * @param bool $force
+     * @param  int  $id
+     * @param  bool  $force
      * @return mixed
      */
     public function deleteById(int $id, bool $force = false)
@@ -296,8 +296,8 @@ abstract class Repository
     /**
      * Restaura dado por id.
      *
-     * @param int $id
-     * @param bool $force
+     * @param  int  $id
+     * @param  bool  $force
      * @return mixed
      */
     public function restore(mixed $id)
@@ -320,7 +320,7 @@ abstract class Repository
     /**
      * Executa validação de dados.
      *
-     * @param string $class
+     * @param  string  $class
      * @return Repository
      */
     public function beforeValidate(FormRequest|string $class)
@@ -339,7 +339,7 @@ abstract class Repository
     /**
      * Resolve classe de validação.
      *
-     * @param string $method
+     * @param  string  $method
      * @return mixed
      */
     protected function resolveClassValidator(string $method)
@@ -368,9 +368,9 @@ abstract class Repository
     /**
      * Executa evento.
      *
-     * @param Model $model
-     * @param Action $action
-     * @param EventType $event
+     * @param  Model  $model
+     * @param  Action  $action
+     * @param  EventType  $event
      * @return mixed
      */
     protected function resolveEvent(Model &$model, Action $action, EventType $event)
@@ -428,7 +428,7 @@ abstract class Repository
     {
         $input = $this->getRequest()->all();
 
-        if (!$strict) {
+        if (! $strict) {
             return $input;
         }
 
