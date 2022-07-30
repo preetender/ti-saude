@@ -16,4 +16,5 @@ yarn-error.log
 /.vscode
 
 .DS_Store
-.php_cs.cache
+
+.php-cs-fixer.cache
