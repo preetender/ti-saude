@@ -68,8 +68,7 @@ class Handler extends ExceptionHandler
         $errors = array_values(
             array_filter(
                 [
-                    $e instanceof HttpException ? (method_exists($e, 'getResponse') ? $e->getResponse()->getStatusCode() : HttpStatusCode::BAD_REQUEST
-                    ) : HttpStatusCode::BAD_REQUEST,
+                    $e instanceof HttpException ? $e->getStatusCode() : HttpStatusCode::BAD_REQUEST,
                     $e instanceof ApiException ? $e->getStatusCode() : null,
                     $e instanceof AuthenticationException ? HttpStatusCode::UNAUTHORIZED : null,
                     $e instanceof AuthorizationException ? HttpStatusCode::FORBIDDEN : null,

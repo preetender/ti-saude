@@ -50,10 +50,10 @@
             "@php artisan key:generate --ansi"
         ],
         "check-style": [
-            "php-cs-fixer fix --dry-run --diff"
+            "php-cs-fixer fix --dry-run --diff ./app"
         ],
         "fix-style": [
-            "php-cs-fixer fix"
+            "php-cs-fixer fix ./app"
         ]
 
     },

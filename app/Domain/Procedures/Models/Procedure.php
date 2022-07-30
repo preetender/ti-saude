@@ -20,7 +20,7 @@ class Procedure extends Model
     protected $fillable = [
         'name',
         'code',
-        'value'
+        'value',
     ];
 
     /**

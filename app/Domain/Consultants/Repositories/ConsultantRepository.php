@@ -40,6 +40,7 @@ class ConsultantRepository extends Repository
 
     /**
      * @return mixed
+     *
      * @throws BindingResolutionException
      */
     public function create()

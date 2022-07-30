@@ -203,7 +203,7 @@ abstract class Repository
                 ->diff($sync)
                 ->toArray();
 
-            !empty($deleted) && $model->{$relation}()->whereIn('id', $deleted)->forceDelete();
+            ! empty($deleted) && $model->{$relation}()->whereIn('id', $deleted)->forceDelete();
         }
 
         return compact('old', 'new');
@@ -428,7 +428,7 @@ abstract class Repository
     {
         $input = $this->getRequest()->all();
 
-        if (!$strict) {
+        if (! $strict) {
             return $input;
         }
 

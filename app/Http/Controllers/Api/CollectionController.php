@@ -30,13 +30,13 @@ class CollectionController extends ControllersController
             'patient' => fn () => PatientRepository::make(),
             'plan' => fn () => PlanRepository::make(),
             'consultant' => fn () => ConsultantRepository::make(),
-            'procedure' => fn () => ProcedureRepository::make()
+            'procedure' => fn () => ProcedureRepository::make(),
         ];
 
         $model = Str::singular($request->route('model'));
 
         abort_if(
-            !array_key_exists($model, $this->repositories),
+            ! array_key_exists($model, $this->repositories),
             HttpStatusCode::BAD_REQUEST,
             'repositorio não foi registrado para o modelo.'
         );

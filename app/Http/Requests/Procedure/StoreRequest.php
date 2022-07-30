@@ -26,7 +26,7 @@ class StoreRequest extends FormRequest
         return [
             'name' => 'required|min:4|max:60',
             'code' => 'nullable|unique:procedures|max:8',
-            'value' => 'required|numeric|min:1'
+            'value' => 'required|numeric|min:1',
         ];
     }
 }
