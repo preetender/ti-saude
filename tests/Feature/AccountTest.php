@@ -16,7 +16,7 @@ class AccountTest extends TestCase
         $user = User::first();
 
         $response = $this
-            ->actingAs($user)
+            ->assertAuthenticatedAs($user)
             ->get('/api/v1/account');
 
         $response
