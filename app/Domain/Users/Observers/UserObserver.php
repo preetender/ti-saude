@@ -1,23 +1,27 @@
 <?php
 
-namespace App\Observers;
+namespace App\Domain\Users\Observers;
 
-use App\Models\User;
+use App\Domain\Users\Models\User;
 use Illuminate\Contracts\Container\BindingResolutionException;
+use Illuminate\Support\Str;
 
 class UserObserver
 {
     /**
-     * @param  Model $model
+     * @param  User  $model
+     *
      * @throws BindingResolutionException
      */
     public function creating(User $model): void
     {
         $model->password = app('hash')->make($model->password);
+        $model->remember_token = Str::random(10);
     }
 
     /**
-     * @param  Model $model
+     * @param  User  $model
+     *
      * @throws BindingResolutionException
      */
     public function updating(User $model): void

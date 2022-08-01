@@ -2,9 +2,8 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Domain\Specialities\Models\Speciality;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Str;
 
 class SpecialtyTableSeeder extends Seeder
 {
@@ -77,7 +76,9 @@ class SpecialtyTableSeeder extends Seeder
         ];
 
         foreach ($specialties as $specialty) {
-            //random_int(0001, 9999)
+            $data = ['name' => $specialty];
+
+            Speciality::updateOrCreate($data, $data);
         }
     }
 }

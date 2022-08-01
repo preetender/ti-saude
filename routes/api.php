@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\Api\CollectionController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -18,4 +18,13 @@ Route::prefix('v1')
     ->middleware('auth:api')
     ->group(function () {
         Route::get('account', fn (Request $request) => $request->user());
+
+        Route::prefix('{model}')
+            ->group(function () {
+                Route::get('/', [CollectionController::class, 'index']);
+                Route::get('{id}', [CollectionController::class, 'show']);
+                Route::post('/', [CollectionController::class, 'store']);
+                Route::put('{id}', [CollectionController::class, 'update']);
+                Route::delete('{id}', [CollectionController::class, 'destroy']);
+            });
     });

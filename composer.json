@@ -10,10 +10,12 @@
         "laravel/framework": "^9.19",
         "laravel/sanctum": "^2.14.1",
         "laravel/tinker": "^2.7",
-        "php-open-source-saver/jwt-auth": "^1.4"
+        "php-open-source-saver/jwt-auth": "^1.4",
+        "preetender/laravel-finder": "^0.1.2"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",
+        "jubeki/laravel-code-style": "^1.0",
         "laravel/pint": "^1.0",
         "laravel/sail": "^1.0.1",
         "mockery/mockery": "^1.4.4",
@@ -46,7 +48,14 @@
         ],
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi"
+        ],
+        "check-style": [
+            "php-cs-fixer fix --dry-run --diff ./app"
+        ],
+        "fix-style": [
+            "php-cs-fixer fix ./app"
         ]
+
     },
     "extra": {
         "laravel": {

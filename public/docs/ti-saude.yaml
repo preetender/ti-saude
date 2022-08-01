@@ -1,0 +1,1302 @@
+swagger: "2.0"
+info:
+  description: "Api responsável pelo controle de paciente, medicos e agendamentos."
+  version: "1.0.0"
+  title: "Ti Saúde"
+  contact:
+    email: "cesinhagutierres@gmail.com"
+    name: "César Gutierres"
+    url: "https://github.com/preetender"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+
+host: "0.0.0.0:8080"
+
+basePath: "/"
+
+schemes:
+  - "http"
+
+tags:
+  - name: Account
+    description: usuario
+  - name: Doctor
+    description: médicos
+  - name: Speciality
+    description: especialidades
+  - name: Patient
+    description: pacientes
+  - name: Health Plan
+    description: planos de saude
+  - name: Consultant
+    description: consultas
+  - name: Procedure
+    description: procedimentos
+
+paths:
+  /login:
+    post:
+      summary: "Login"
+      description: "Gerar token para acesso aos recursos."
+      operationId: "authUser"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          required: true
+          schema:
+            $ref: "#/definitions/Auth"
+      responses:
+        200:
+          description: OK
+          schema:
+            properties:
+              access_token:
+                type: "string"
+              user:
+                $ref: "#/definitions/User"
+        401:
+          $ref: "#/responses/Unauthorized"
+        default:
+          $ref: "#/responses/Generic"
+
+  /api/v1/account:
+    get:
+      tags:
+        - Account
+      summary: "Account"
+      description: "Dados do usuario autenticado"
+      operationId: "userInfo"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      security:
+        - ApiKeyAuth: []
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/User"
+        401:
+          $ref: "#/responses/Unauthorized"
+
+  /api/v1/doctors:
+    get:
+      tags:
+        - Doctor
+      description: "Lista de médicos"
+      operationId: doctorList
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      security:
+        - ApiKeyAuth: []
+      responses:
+        200:
+            description: OK
+            schema:
+              $ref: "#/definitions/Doctors"
+        401:
+          $ref: "#/responses/Unauthorized"
+    post:
+      tags:
+        - Doctor
+      operationId: doctorStore
+      description: Cadastro de medico
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - in: body
+          name: default
+          schema:
+            $ref: "#/definitions/DoctorPayload"
+      responses:
+        201:
+          description: CREATED
+          schema:
+            $ref: "#/definitions/Doctor"
+        401:
+          $ref: "#/responses/Unauthorized"
+        422:
+          $ref: "#/responses/Generic"
+
+  /api/v1/doctors/{id}:
+    get:
+      tags:
+        - Doctor
+      operationId: doctorShow
+      description: Visualizar médico
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - in: path
+          name: id
+          type: integer
+          required: true
+          description: id do médico
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/Doctor"
+        401:
+          $ref: "#/responses/Unauthorized"
+        404:
+          $ref: "#/responses/Generic"
+
+    put:
+      tags:
+        - Doctor
+      operationId: doctorUpdate
+      description: Editar médico
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - in: path
+          name: id
+          type: integer
+          required: true
+          description: id do médico
+        - in: body
+          name: default
+          required: true
+          schema:
+            $ref: "#/definitions/DoctorPayload"
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/Doctor"
+        401:
+          $ref: "#/responses/Unauthorized"
+        404:
+          $ref: "#/responses/Generic"
+
+    delete:
+      tags:
+        - Doctor
+      operationId: doctorDelete
+      description: Remover médico
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - in: path
+          name: id
+          type: integer
+          required: true
+          description: id do médico
+      responses:
+        204:
+          description: No Content
+        401:
+          $ref: "#/responses/Unauthorized"
+
+  /api/v1/specialities:
+    get:
+      tags:
+        - Speciality
+      description: "Lista de especialidades"
+      operationId: specialityList
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      security:
+        - ApiKeyAuth: []
+      responses:
+        200:
+            description: OK
+            schema:
+              $ref: "#/definitions/Specialities"
+        401:
+          $ref: "#/responses/Unauthorized"
+    post:
+      tags:
+        - Speciality
+      operationId: specialityStore
+      description: Cadastro de especialidades
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - in: body
+          name: default
+          schema:
+            $ref: "#/definitions/SpecialityPayload"
+      responses:
+        201:
+          description: CREATED
+          schema:
+            $ref: "#/definitions/Speciality"
+        401:
+          $ref: "#/responses/Unauthorized"
+        422:
+          $ref: "#/responses/Generic"
+
+  /api/v1/specialities/{id}:
+    get:
+      tags:
+        - Speciality
+      operationId: specialityShow
+      description: Visualizar especialidade
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - in: path
+          name: id
+          type: integer
+          required: true
+          description: id da especialidade
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/Speciality"
+        401:
+          $ref: "#/responses/Unauthorized"
+        404:
+          $ref: "#/responses/Generic"
+
+    put:
+      tags:
+        - Speciality
+      operationId: specialityUpdate
+      description: Editar especialidade
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - in: path
+          name: id
+          type: integer
+          required: true
+          description: id da especialidade
+        - in: body
+          name: default
+          required: true
+          schema:
+            $ref: "#/definitions/SpecialityPayload"
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/Speciality"
+        401:
+          $ref: "#/responses/Unauthorized"
+        404:
+          $ref: "#/responses/Generic"
+
+    delete:
+      tags:
+        - Speciality
+      operationId: specialityDelete
+      description: Remover especialidade
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - in: path
+          name: id
+          type: integer
+          required: true
+          description: id da especialidade
+      responses:
+        204:
+          description: No Content
+        401:
+          $ref: "#/responses/Unauthorized"
+
+  /api/v1/patients:
+    get:
+      tags:
+        - Patient
+      description: "Lista de pacientes"
+      operationId: patientList
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      security:
+        - ApiKeyAuth: []
+      responses:
+        200:
+            description: OK
+            schema:
+              $ref: "#/definitions/Patients"
+        401:
+          $ref: "#/responses/Unauthorized"
+    post:
+      tags:
+        - Patient
+      operationId: patientStore
+      description: Cadastro de pacientes
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - in: body
+          name: default
+          schema:
+            $ref: "#/definitions/PatientPayload"
+      responses:
+        201:
+          description: CREATED
+          schema:
+            $ref: "#/definitions/Patient"
+        401:
+          $ref: "#/responses/Unauthorized"
+        422:
+          $ref: "#/responses/Generic"
+
+  /api/v1/patients/{id}:
+    get:
+      tags:
+        - Patient
+      operationId: patientShow
+      description: Visualizar paciente
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - in: path
+          name: id
+          type: integer
+          required: true
+          description: id do paciente
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/Patient"
+        401:
+          $ref: "#/responses/Unauthorized"
+        404:
+          $ref: "#/responses/Generic"
+
+    put:
+      tags:
+        - Patient
+      operationId: patientUpdate
+      description: Editar paciente
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - in: path
+          name: id
+          type: integer
+          required: true
+          description: id do médico
+        - in: body
+          name: default
+          required: true
+          schema:
+            $ref: "#/definitions/PatientPayload"
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/Patient"
+        401:
+          $ref: "#/responses/Unauthorized"
+        404:
+          $ref: "#/responses/Generic"
+
+    delete:
+      tags:
+        - Patient
+      operationId: patientDelete
+      description: Remover paciente
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - in: path
+          name: id
+          type: integer
+          required: true
+          description: id do paciente
+      responses:
+        204:
+          description: No Content
+        401:
+          $ref: "#/responses/Unauthorized"
+
+  /api/v1/plans:
+    get:
+      tags:
+        - Health Plan
+      description: "Lista de planos"
+      operationId: planList
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      security:
+        - ApiKeyAuth: []
+      responses:
+        200:
+            description: OK
+            schema:
+              $ref: "#/definitions/HealthPlans"
+        401:
+          $ref: "#/responses/Unauthorized"
+
+    post:
+      tags:
+        - Health Plan
+      operationId: planStore
+      description: Cadastro de planos de saúde
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - in: body
+          name: default
+          schema:
+            $ref: "#/definitions/HealthPlanPayload"
+      responses:
+        201:
+          description: CREATED
+          schema:
+            $ref: "#/definitions/HealthPlan"
+        401:
+          $ref: "#/responses/Unauthorized"
+        422:
+          $ref: "#/responses/Generic"
+
+  /api/v1/plans/{id}:
+    get:
+      tags:
+        - Health Plan
+      operationId: planShow
+      description: Visualizar plano
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - in: path
+          name: id
+          type: integer
+          required: true
+          description: id do plano de saúde
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/HealthPlan"
+        401:
+          $ref: "#/responses/Unauthorized"
+        404:
+          $ref: "#/responses/Generic"
+
+    put:
+      tags:
+        - Health Plan
+      operationId: planUpdate
+      description: Editar plano de saúde
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - in: path
+          name: id
+          type: integer
+          required: true
+          description: id do plano de saúde
+        - in: body
+          name: default
+          required: true
+          schema:
+            $ref: "#/definitions/HealthPlanPayload"
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/HealthPlan"
+        401:
+          $ref: "#/responses/Unauthorized"
+        404:
+          $ref: "#/responses/Generic"
+
+    delete:
+      tags:
+        - Health Plan
+      operationId: planDelete
+      description: Remover médico
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - in: path
+          name: id
+          type: integer
+          required: true
+          description: id do plano de saúde
+      responses:
+        204:
+          description: No Content
+        401:
+          $ref: "#/responses/Unauthorized"
+
+  /api/v1/consultants:
+    get:
+      tags:
+        - Consultant
+      description: "Lista de consultas"
+      operationId: consultList
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      security:
+        - ApiKeyAuth: []
+      responses:
+        200:
+            description: OK
+            schema:
+              $ref: "#/definitions/Consultants"
+        401:
+          $ref: "#/responses/Unauthorized"
+    post:
+      tags:
+        - Consultant
+      operationId: consultantStore
+      description: Cadastro de consultas
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - in: body
+          name: default
+          schema:
+            $ref: "#/definitions/ConsultantPayload"
+      responses:
+        201:
+          description: CREATED
+          schema:
+            $ref: "#/definitions/Consultant"
+        401:
+          $ref: "#/responses/Unauthorized"
+        422:
+          $ref: "#/responses/Generic"
+
+  /api/v1/consultants/{id}:
+    get:
+      tags:
+        - Consultant
+      operationId: consultantShow
+      description: Visualizar consulta
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - in: path
+          name: id
+          type: integer
+          required: true
+          description: id da consulta
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/Consultant"
+        401:
+          $ref: "#/responses/Unauthorized"
+        404:
+          $ref: "#/responses/Generic"
+
+    put:
+      tags:
+        - Consultant
+      operationId: consultantUpdate
+      description: Editar consulta
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - in: path
+          name: id
+          type: integer
+          required: true
+          description: id da consulta
+        - in: body
+          name: default
+          required: true
+          schema:
+            $ref: "#/definitions/ConsultantPayload"
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/Consultant"
+        401:
+          $ref: "#/responses/Unauthorized"
+        404:
+          $ref: "#/responses/Generic"
+
+    delete:
+      tags:
+        - Consultant
+      operationId: consultantDelete
+      description: Remover consulta
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - in: path
+          name: id
+          type: integer
+          required: true
+          description: id da consulta
+      responses:
+        204:
+          description: No Content
+        401:
+          $ref: "#/responses/Unauthorized"
+
+  /api/v1/procedures:
+    get:
+      tags:
+        - Procedure
+      description: "Lista de procedimentos"
+      operationId: procedureList
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      security:
+        - ApiKeyAuth: []
+      responses:
+        200:
+            description: OK
+            schema:
+              $ref: "#/definitions/Procedures"
+        401:
+          $ref: "#/responses/Unauthorized"
+    post:
+      tags:
+        - Procedure
+      operationId: procedureStore
+      description: Cadastro de procedimentos
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - in: body
+          name: default
+          schema:
+            $ref: "#/definitions/ProcedurePayload"
+      responses:
+        201:
+          description: CREATED
+          schema:
+            $ref: "#/definitions/Procedure"
+        401:
+          $ref: "#/responses/Unauthorized"
+        422:
+          $ref: "#/responses/Generic"
+
+  /api/v1/procedures/{id}:
+    get:
+      tags:
+        - Procedure
+      operationId: procedureShow
+      description: Visualizar procedimento
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - in: path
+          name: id
+          type: integer
+          required: true
+          description: id do procedimento
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/Procedure"
+        401:
+          $ref: "#/responses/Unauthorized"
+        404:
+          $ref: "#/responses/Generic"
+
+    put:
+      tags:
+        - Procedure
+      operationId: procedureUpdate
+      description: Editar procedimento
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - in: path
+          name: id
+          type: integer
+          required: true
+          description: id do procedimento
+        - in: body
+          name: default
+          required: true
+          schema:
+            $ref: "#/definitions/ProcedurePayload"
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/Procedure"
+        401:
+          $ref: "#/responses/Unauthorized"
+        404:
+          $ref: "#/responses/Generic"
+
+    delete:
+      tags:
+        - Procedure
+      operationId: procedureDelete
+      description: Remover procedimento
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - in: path
+          name: id
+          type: integer
+          required: true
+          description: id do procedimento
+      responses:
+        204:
+          description: No Content
+        401:
+          $ref: "#/responses/Unauthorized"
+
+securityDefinitions:
+  ApiKeyAuth:
+    type: apiKey
+    in: header
+    name: Authorization
+    description: Token gerado na autentição.
+
+definitions:
+  Auth:
+    type: object
+    example:
+      email: test@example.com
+      password: password
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+
+  User:
+    type: object
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+      email:
+        type: string
+      created_at:
+        type: string
+      updated_at:
+        type: string
+
+  Speciality:
+    type: object
+    properties:
+      id:
+        type: integer
+        example: 1
+      name:
+        type: string
+        example: Exemplo
+      code:
+        type: string
+        example: 2700
+      created_at:
+          type: string
+      updated_at:
+        type: string
+
+  Specialities:
+    type: object
+    properties:
+      meta:
+        type: object
+      links:
+        type: object
+      data:
+        type: array
+        items:
+          $ref: "#/definitions/Speciality"
+        example:
+          - id: 1
+            name: Exemplo
+            code: 2701
+
+  Doctor:
+    type: object
+    properties:
+        id:
+          type: integer
+        name:
+          type: string
+        code:
+          type: string
+        crm:
+          type: string
+        specialities:
+          type: array
+          items:
+            $ref: "#/definitions/Speciality"
+        created_at:
+          type: string
+        updated_at:
+          type: string
+
+  Doctors:
+    type: object
+    properties:
+      meta:
+        type: object
+      links:
+        type: object
+      data:
+        type: array
+        items:
+          $ref: "#/definitions/Doctor"
+        example:
+          - id: 1
+            name: Fulano
+            code: 0001
+            crm: 2700
+            specialities:
+              - id: 1
+                name: Exemplo
+
+  PatientPhone:
+    type: object
+    properties:
+      id:
+        type: integer
+        example: 1
+      number:
+        type: number
+        example: 67999999999
+      created_at:
+        type: string
+      updated_at:
+        type: string
+
+  Patient:
+    type: object
+    properties:
+      id:
+        type: integer
+        example: 1
+      name:
+        type: string
+        example: Exemplo
+      code:
+        type: string
+        example: 2700
+      birth_date:
+        type: string
+        example: 1990-01-01
+      phones:
+        type: array
+        items:
+          $ref: "#/definitions/PatientPhone"
+      plans:
+        type: array
+        items:
+          $ref: "#/definitions/HealthPlan"
+      created_at:
+          type: string
+      updated_at:
+        type: string
+
+  Patients:
+    type: object
+    properties:
+      meta:
+        type: object
+      links:
+        type: object
+      data:
+        type: array
+        items:
+          $ref: "#/definitions/Patient"
+        example:
+          - id: 1
+            name: Fulano
+            code: 2700
+            birth_date: 1990-01-01
+            phones:
+              - id: 1
+                number: 21967840181
+            plans:
+              - id: 1
+                description: Plano Básico
+                phone: 6730562157
+                code: 2700
+
+  HealthPlan:
+    type: object
+    properties:
+      id:
+        type: integer
+      description:
+        type: string
+      code:
+        type: string
+      phone:
+        type: string
+      created_at:
+          type: string
+      updated_at:
+        type: string
+
+  HealthPlans:
+    type: object
+    properties:
+      meta:
+        type: object
+      links:
+        type: object
+      data:
+        type: array
+        items:
+          $ref: "#/definitions/HealthPlan"
+        example:
+          - id: 1
+            description: Plano Básico
+            code: 2700
+            phone: 6730562157
+
+  Consultant:
+    type: object
+    properties:
+      id:
+        type: integer
+      private:
+        type: boolean
+      code:
+        type: string
+      date:
+        type: string
+      hour:
+        type: string
+      patient:
+        type: object
+        $ref: "#/definitions/Patient"
+      doctor:
+        type: object
+        $ref: "#/definitions/Doctor"
+      procedures:
+        type: array
+        items:
+          $ref: "#/definitions/Procedure"
+      created_at:
+          type: string
+      updated_at:
+        type: string
+
+  Consultants:
+    type: object
+    properties:
+      meta:
+        type: object
+      links:
+        type: object
+      data:
+        type: array
+        items:
+          $ref: "#/definitions/Consultant"
+        example:
+          - id: 1
+            private: false
+            code: 27060849
+            date: 2022-08-01
+            hour: 18:00
+            patient:
+              id: 1
+              name: Juliana Gutierres
+              code: 2700
+            doctor:
+              id: 1
+              name: César Gutierres
+              code: 2900
+              crm: 2712
+            procedures:
+              - id: 1
+                name: Drenagem
+                value: 99
+                code: 2901
+
+  Procedure:
+    type: object
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+      code:
+        type: string
+      value:
+        type: number
+
+  Procedures:
+    type: object
+    properties:
+      meta:
+        type: object
+      links:
+        type: object
+      data:
+        type: array
+        items:
+          $ref: "#/definitions/Procedure"
+        example:
+          - id: 1
+            name: Drenagem
+            value: 99
+            code: 2901
+
+  DoctorPayload:
+    type: object
+    properties:
+      name:
+        type: string
+        example: Dr. Fulano
+      code:
+        type: string
+        example: 2700
+      crm:
+        type: string
+        example: 917
+      specialities:
+        type: array
+        items:
+          type: string
+        example:
+          - 1
+          - 3
+    required:
+      - name
+      - crm
+
+  SpecialityPayload:
+    type: object
+    properties:
+      name:
+        type: string
+        example: Exemplo
+      code:
+        type: string
+        example: 1900
+    required:
+      - name
+
+  PatientPayload:
+    type: object
+    properties:
+      name:
+        type: string
+      code:
+        type: string
+      birth_date:
+        type: string
+      phones:
+        type: array
+        items:
+          type: object
+          properties:
+            id:
+              type: integer
+              description: informado apenas na atualizaç
+            number:
+              type: string
+        required:
+          - number
+      plans:
+        type: array
+        items:
+          type: object
+          properties:
+            id:
+              type: integer
+              description: id do plano
+            contract_number:
+              type: string
+
+  HealthPlanPayload:
+    type: object
+    properties:
+      description:
+        type: string
+        example: Plano Básico
+      code:
+        type: string
+        example: 899
+      phone:
+        type: string
+        example: 6730562157
+    required:
+      - description
+      - phone
+
+  ConsultantPayload:
+    type: object
+    properties:
+      private:
+        type: boolean
+      date:
+        type: string
+      hour:
+        type: string
+      patient_id:
+        type: integer
+        description: id do paciente
+        example: 1
+      doctor_id:
+        type: integer
+        description: id do médico
+        example: 1
+      procedures:
+        type: array
+        description: lista de procedimentos
+        items:
+          type: string
+          example: 1
+
+  ProcedurePayload:
+    type: object
+    properties:
+      code:
+        type: string
+        example: null
+      name:
+        type: string
+        example: Exemplo
+      value:
+        type: number
+        example: 190.50
+    required:
+      - name
+      - value
+
+  Error:
+    type: object
+    properties:
+      message:
+        type: string
+      errors:
+        type: array
+        items:
+          type: string
+    required:
+      - message
+      - errors
+
+responses:
+  NotFound:
+    description: Não foi possivel completar a chamada
+    schema:
+      $ref: '#/definitions/Error'
+
+  Generic:
+    description: Unexpected error
+    schema:
+      $ref: '#/definitions/Error'
+
+  Unauthorized:
+    description: Unauthorized
+    schema:
+      $ref: '#/definitions/Error'
