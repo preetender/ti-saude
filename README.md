@@ -14,7 +14,7 @@ Duplique o arquivo reservado para as configurações da API como no comando a se
 
 Já em seu `.env` configure as variáveis abaixo com os dados do seu banco de dados.
 
-## Banco de dados
+### Banco de dados
 
 ```env
 DB_CONNECTION=mysql
@@ -33,7 +33,13 @@ Informe sua senha no passo a seguir e apos conectar, execute:
 
 > CREATE DATABASE ti_saude
 
-### Migrar Banco de Dados
+### composer
+
+Execute  Instalação dos pacotes:
+
+> composer install
+
+### Banco de Dados
 
 Após a configuração anterior, execute o comado para criar a estrutura do banco de dados + a geração de dados complementares.
 
@@ -53,6 +59,14 @@ JWT_SECRET=RANDOM_STRING
 JWT_ALGO=HS256
 ```
 
+### Iniciar Aplicação
+
+No terminal execute o script a seguir para iniciar a aplicação, como no exemplo a seguir:
+
+> php artisan serve --port=8080
+
+Os recursos estaram disponiveis em: `http://localhost:8080`.
+
 ## Estrutura
 
 Para fim de uma melhor organização, foi utilizado o modelo baseado nos principios do `Domain Drive Design`.
@@ -65,6 +79,10 @@ Para fim de uma melhor organização, foi utilizado o modelo baseado nos princip
         - Repositories
         - ...
 ```
+
+## Documentação
+
+Navegue até `./public/docs`, na pasta tera dois arquivos um com endpoints no insomnia `ti-saude-endpoints.json` e outro com detalhes descritos no formator `swagger v2.0` `ti-saude.yaml`.
 
 ## Notas do desenvolvedor
 
