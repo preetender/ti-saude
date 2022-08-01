@@ -14,7 +14,7 @@ class ConsultantResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'is_private' => $this->private,
+            'private' => $this->private,
             'code' => $this->code,
             'date' => $this->date,
             'hour' => $this->hour,
